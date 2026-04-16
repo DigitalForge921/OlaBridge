@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Commander | OlaBenin Bridge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+        body {
+            background: #f4f7fa;
+            color: #1e2a3e;
+            overflow-x: hidden;
+        }
+        /* NAVIGATION IDENTIQUE A L'ACCUEIL */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: #0f2b36;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .logo h2 { 
+            color: white; 
+            font-size: clamp(1.2rem, 5vw, 1.6rem); 
+            font-weight: 700;
+        }
+        .logo span { color: #ffb347; }
+        .nav-links { 
+            display: flex; 
+            gap: clamp(1rem, 4vw, 2rem); 
+            list-style: none; 
+        }
+        .nav-links a { 
+            color: white; 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: 0.2s;
+            font-size: clamp(0.85rem, 3vw, 1rem);
+        }
+        .nav-links a:hover, .nav-links a.active { color: #ffb347; }
+        .menu-icon { 
+            display: none; 
+            font-size: 1.8rem; 
+            color: white; 
+            cursor: pointer; 
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 75%;
+                max-width: 280px;
+                height: calc(100vh - 70px);
+                background: #0f2b36;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 2.5rem;
+                transition: 0.3s ease-in-out;
+                gap: 2rem;
+                border-radius: 0 20px 20px 0;
+                box-shadow: 5px 0 20px rgba(0,0,0,0.3);
+                z-index: 999;
+            }
+            .nav-links.open { left: 0; }
+            .menu-icon { display: block; }
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 7rem 1.5rem 3rem;
+        }
+        .card-form {
+            background: white;
+            border-radius: 32px;
+            padding: clamp(1.5rem, 5vw, 2.5rem);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        h1 {
+            font-size: clamp(1.4rem, 6vw, 1.9rem);
+            margin-bottom: 0.5rem;
+            color: #0f2b36;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .sub {
+            color: #5a6e7c;
+            margin-bottom: 2rem;
+            font-size: clamp(0.85rem, 3.5vw, 1rem);
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid #dce5ec;
+            border-radius: 28px;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            background: #fff;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ffb347;
+            box-shadow: 0 0 0 3px rgba(255,179,71,0.2);
+        }
+        .row-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+        @media (max-width: 600px) {
+            .row-2col { 
+                grid-template-columns: 1fr; 
+                gap: 1rem;
+            }
+            .container { 
+                padding: 6rem 1rem 2rem; 
+            }
+        }
+        
+        .premium-options {
+            background: #fef7e8;
+            border-radius: 24px;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .premium-options h4 {
+            margin-bottom: 1rem;
+            color: #b45f1b;
+            font-size: clamp(1rem, 4vw, 1.2rem);
+        }
+        .premium-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .premium-option input {
+            width: auto;
+            margin-right: 0.5rem;
+            transform: scale(1.05);
+        }
+        .premium-option label {
+            margin-bottom: 0;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .badge-premium {
+            background: #ffb34720;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #b45f1b;
+            margin-left: 0.5rem;
+            font-weight: normal;
+        }
+        
+        .promo-code {
+            display: flex;
+            gap: 0.8rem;
+            margin: 1.2rem 0;
+            flex-wrap: wrap;
+        }
+        .promo-code input {
+            flex: 2;
+            min-width: 160px;
+        }
+        .promo-code button {
+            background: #0f2b36;
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .promo-code button:hover {
+            background: #ffb347;
+            color: #1e2a3e;
+        }
+        #promoMessage {
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .calc-result {
+            background: #f0f5f9;
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        .calc-result h3 {
+            font-size: clamp(1.5rem, 7vw, 2.2rem);
+            color: #ffb347;
+            margin: 0.5rem 0;
+        }
+        .btn-submit {
+            background: #ffb347;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: clamp(1rem, 4vw, 1.1rem);
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-submit:hover {
+            background: #ffa01e;
+            transform: scale(1.01);
+        }
+        footer {
+            background: #0a1c24;
+            color: #ccdde5;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
+        }
+        .ville-info {
+            font-size: 0.7rem;
+            color: #ffb347;
+            margin-top: 0.3rem;
+        }
+        .premiumDetails, .promoDetails {
+            font-size: 0.8rem;
+            margin-top: 6px;
+        }
+        .frais-livraison-line {
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        i.fa, i.far, i.fas {
+            margin-right: 4px;
+        }
+        @media (max-width: 480px) {
+            .premium-option {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            .promo-code button {
+                padding: 0.8rem 1.2rem;
+            }
+            .calc-result {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <div class="logo"><h2>OlaBenin<span>Bridge</span></h2></div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="commande.html" class="active">Commander</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="menu-icon" id="menuIcon"><i class="fas fa-bars"></i></div>
+</nav>
+
+<div class="container">
+    <div class="card-form">
+        <h1><i class="fas fa-calculator"></i> Simulation & Commande express</h1>
+        <p class="sub">Estimation incluant achat en Chine, expédition, dédouanement et livraison à domicile au Bénin. <strong>Code promo BIENVENUE5 = -5%</strong></p>
+        
+        <form id="orderForm">
+            <div class="row-2col">
+                <div class="form-group"><label><i class="fas fa-user"></i> Nom complet</label><input type="text" id="nom" required placeholder="Jean DUPONT"></div>
+                <div class="form-group"><label><i class="fas fa-envelope"></i> Email</label><input type="email" id="email" required placeholder="contact@exemple.com"></div>
+            </div>
+            <div class="form-group"><label><i class="fab fa-whatsapp"></i> WhatsApp (avec indicatif)</label><input type="tel" id="whatsapp" required placeholder="+229 90 00 00 00"></div>
+            <div class="row-2col">
+                <div class="form-group"><label><i class="fas fa-box"></i> Nom du produit</label><input type="text" id="produit" required placeholder="Équipement électronique / textile / pièces"></div>
+                <div class="form-group"><label><i class="fas fa-hashtag"></i> Quantité</label><input type="number" id="quantite" value="1" min="1" step="1"></div>
+            </div>
+            <div class="form-group"><label><i class="fas fa-link"></i> Lien produit (Alibaba / Taobao / 1688)</label><input type="url" id="lien" placeholder="https://..."></div>
+            <div class="form-group"><label><i class="fas fa-image"></i> Image produit (URL optionnelle)</label><input type="url" id="imageUrl" placeholder="https://..."></div>
+            <div class="row-2col">
+                <div class="form-group"><label><i class="fas fa-weight-hanging"></i> Poids (kg)</label><input type="number" id="poids" step="0.1" value="5" placeholder="kg" required></div>
+                <div class="form-group"><label><i class="fas fa-cube"></i> Dimensions (LxHxP cm)</label><input type="text" id="dimensions" placeholder="30x40x20"></div>
+            </div>
+            <div class="form-group"><label><i class="fas fa-ship"></i> Type de transport</label>
+                <select id="transport">
+                    <option value="maritime">Maritime (60-95 jours) – Économique</option>
+                    <option value="aerien">Aérien (20-25 jours) – Rapide</option>
+                </select>
+            </div>
+
+            <div class="form-group"><label><i class="fas fa-map-marker-alt"></i> Ville de livraison au Bénin</label>
+                <select id="villeLivraison">
+                    <option value="cotonou">Cotonou - 1 000 FCFA</option>
+                    <option value="portonovo">Porto-Novo - 2 000 FCFA</option>
+                    <option value="parakou">Parakou - 8 000 FCFA</option>
+                    <option value="dassa">Dassa-Zoumé - 5 000 FCFA</option>
+                    <option value="abomey">Abomey - 5 000 FCFA</option>
+                    <option value="bohicon">Bohicon - 5 000 FCFA</option>
+                    <option value="lokossa">Lokossa - 4 000 FCFA</option>
+                    <option value="natitingou">Natitingou - 10 000 FCFA</option>
+                    <option value="autre">Autre ville (nous consulter)</option>
+                </select>
+                <div class="ville-info">📦 Frais de livraison inclus depuis notre entrepôt de Cotonou vers votre domicile.</div>
+            </div>
+
+            <div class="premium-options">
+                <h4><i class="fas fa-crown"></i> Services Premium <span class="badge-premium">sérénité</span></h4>
+                <div class="premium-option">
+                    <input type="checkbox" id="premiumControle">
+                    <label for="premiumControle">🔍 Contrôle qualité en usine (+5% du montant hors transport)</label>
+                </div>
+                <div class="premium-option">
+                    <input type="checkbox" id="premiumPhotos">
+                    <label for="premiumPhotos">📸 Photos/vidéos avant expédition (+25 000 FCFA forfait)</label>
+                </div>
+                <div class="premium-option">
+                    <input type="checkbox" id="premiumEmballage">
+                    <label for="premiumEmballage">📦 Emballage renforcé + protection (+3% du montant hors transport)</label>
+                </div>
+            </div>
+
+            <div class="promo-code">
+                <input type="text" id="codePromo" placeholder="Code promo (BIENVENUE5 = -5%)">
+                <button type="button" id="applyPromo"><i class="fas fa-ticket-alt"></i> Appliquer</button>
+            </div>
+            <p id="promoMessage" style="font-size:0.8rem; color:green;"></p>
+
+            <div class="calc-result">
+                <i class="fas fa-chart-line"></i>
+                <h3 id="prixFinal">0 FCFA</h3>
+                <p id="delaiEstime"><i class="fas fa-hourglass-half"></i> Délai estimé: --</p>
+                <p id="fraisLivraison" class="frais-livraison-line"></p>
+                <small>*Tarif incluant achat, expédition, dédouanement et livraison finale. Marge 15% intégrée.</small>
+                <div id="premiumDetails" class="premiumDetails"></div>
+                <div id="promoDetails" class="promoDetails"></div>
+            </div>
+
+            <button type="submit" class="btn-submit"><i class="fab fa-whatsapp"></i> Envoyer la demande & recevoir devis</button>
+        </form>
+        <p style="text-align:center; margin-top:1.2rem; font-size:0.8rem; color:#5a6e7c;">📞 Un agent vous recontactera sous 24h avec votre numéro de suivi unique.</p>
+    </div>
+</div>
+
+<footer>
+    <p>OlaBenin Bridge – Votre partenaire import Chine → Bénin | Livraison partout</p>
+</footer>
+
+<script>
+    // Frais de livraison par ville (FCFA)
+    const fraisLivraisonMap = {
+        cotonou: 1000,
+        portonovo: 2000,
+        parakou: 8000,
+        dassa: 5000,
+        abomey: 5000,
+        bohicon: 5000,
+        lokossa: 4000,
+        natitingou: 10000,
+        autre: 0
+    };
+
+    let promoApplied = false;
+    let promoValue = 0; // 0.05 pour 5%
+
+    // Calcul du coût de base (achat + expédition Chine -> Bénin)
+    function calculateBaseCost() {
+        let poids = parseFloat(document.getElementById('poids').value);
+        if (isNaN(poids) || poids <= 0) poids = 0;
+        let transport = document.getElementById('transport').value;
+        let baseCost = 0;
+        let delai = "";
+        if (transport === 'maritime') {
+            // maritime: 1500 FCFA/kg + frais fixe 25000
+            baseCost = poids * 1500 + 25000;
+            delai = "Maritime : 60-95 jours ouvrés";
+        } else {
+            // aérien: 6500 FCFA/kg + 15000
+            baseCost = poids * 6500 + 15000;
+            delai = "Aérien : 20-25 jours ouvrés";
+        }
+        return { baseCost, delai };
+    }
+
+    // Calcul des options premium (basé sur le coût de base avant marge)
+    function calculatePremiumOptions(baseCost) {
+        let premiumTotal = 0;
+        let details = [];
+        if (document.getElementById('premiumControle').checked) {
+            let montant = baseCost * 0.05;
+            premiumTotal += montant;
+            details.push(`🔍 Contrôle qualité: +${Math.round(montant).toLocaleString()} FCFA`);
+        }
+        if (document.getElementById('premiumPhotos').checked) {
+            premiumTotal += 25000;
+            details.push(`📸 Photos/vidéos: +25 000 FCFA`);
+        }
+        if (document.getElementById('premiumEmballage').checked) {
+            let montant = baseCost * 0.03;
+            premiumTotal += montant;
+            details.push(`📦 Emballage renforcé: +${Math.round(montant).toLocaleString()} FCFA`);
+        }
+        return { premiumTotal, details };
+    }
+
+    // Mise à jour de l'affichage du prix et détails
+    function updatePriceDisplay() {
+        // 1. Base hors marge
+        let { baseCost, delai } = calculateBaseCost();
+        if (baseCost < 0) baseCost = 0;
+        // Marge 15%
+        let afterMargin = baseCost * 1.15;
+        
+        // 2. Premium (appliqué sur baseCost avant marge, mais on ajoute après marge pour rester cohérent)
+        let { premiumTotal, details } = calculatePremiumOptions(baseCost);
+        let totalBeforeShipping = afterMargin + premiumTotal;
+        
+        // 3. Frais de livraison locale Bénin
+        let ville = document.getElementById('villeLivraison').value;
+        let fraisLocal = fraisLivraisonMap[ville] || 0;
+        let finalPrice = totalBeforeShipping + fraisLocal;
+        
+        // 4. Application du code promo (réduction sur le prix final)
+        let promoDiscount = 0;
+        if (promoApplied && promoValue > 0) {
+            promoDiscount = finalPrice * promoValue;
+            finalPrice = finalPrice - promoDiscount;
+        }
+        
+        // Mise à jour UI
+        document.getElementById('prixFinal').innerText = Math.round(finalPrice).toLocaleString() + " FCFA";
+        document.getElementById('delaiEstime').innerHTML = `<i class="fas fa-clock"></i> Délai estimé: ${delai}`;
+        
+        let villeNom = document.getElementById('villeLivraison').options[document.getElementById('villeLivraison').selectedIndex].text;
+        document.getElementById('fraisLivraison').innerHTML = `<i class="fas fa-truck"></i> Livraison porte-à-porte: ${villeNom} - ${fraisLocal.toLocaleString()} FCFA`;
+        
+        // Détails premium
+        let premiumHtml = "";
+        if (details.length > 0) premiumHtml = "✨ " + details.join(" • ");
+        document.getElementById('premiumDetails').innerHTML = premiumHtml;
+        
+        // Détails promo
+        if (promoApplied && promoValue > 0) {
+            document.getElementById('promoDetails').innerHTML = `🏷️ Code promo BIENVENUE5 appliqué: -${Math.round(promoDiscount).toLocaleString()} FCFA (5% de réduction)`;
+        } else {
+            document.getElementById('promoDetails').innerHTML = "";
+        }
+        
+        return { finalPrice, fraisLocal };
+    }
+
+    // Event listeners pour tous les champs influençant le prix
+    const priceTriggers = ['poids', 'transport', 'villeLivraison', 'premiumControle', 'premiumPhotos', 'premiumEmballage'];
+    priceTriggers.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => updatePriceDisplay());
+        if (el && (id.includes('premium'))) el.addEventListener('change', () => updatePriceDisplay());
+    });
+    
+    // Code promo
+    document.getElementById('applyPromo').addEventListener('click', () => {
+        let code = document.getElementById('codePromo').value.trim().toUpperCase();
+        const msgDiv = document.getElementById('promoMessage');
+        if (code === "BIENVENUE5") {
+            promoApplied = true;
+            promoValue = 0.05;
+            msgDiv.innerHTML = "✅ Code promo BIENVENUE5 activé ! -5% sur votre commande.";
+            msgDiv.style.color = "green";
+            updatePriceDisplay();
+        } else if (code === "") {
+            promoApplied = false;
+            promoValue = 0;
+            msgDiv.innerHTML = "";
+            updatePriceDisplay();
+        } else {
+            msgDiv.innerHTML = "❌ Code invalide. Essayez BIENVENUE5";
+            msgDiv.style.color = "red";
+            promoApplied = false;
+            promoValue = 0;
+            updatePriceDisplay();
+        }
+    });
+    
+    // Initialisation
+    updatePriceDisplay();
+
+    // Gestion du formulaire: envoi WhatsApp et email (ouverture)
+    const form = document.getElementById('orderForm');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Récupération des champs
+        const nom = document.getElementById('nom').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const whatsapp = document.getElementById('whatsapp').value.trim();
+        const produit = document.getElementById('produit').value.trim();
+        const quantite = document.getElementById('quantite').value;
+        const poids = document.getElementById('poids').value;
+        const dimensions = document.getElementById('dimensions').value.trim() || "Non précisé";
+        const transportSelect = document.getElementById('transport');
+        const transportTexte = transportSelect.options[transportSelect.selectedIndex].text;
+        const villeSelect = document.getElementById('villeLivraison');
+        const villeTexte = villeSelect.options[villeSelect.selectedIndex].text;
+        const prixAffiche = document.getElementById('prixFinal').innerText;
+        
+        let premiumServicesList = [];
+        if (document.getElementById('premiumControle').checked) premiumServicesList.push("Contrôle qualité");
+        if (document.getElementById('premiumPhotos').checked) premiumServicesList.push("Photos/vidéos");
+        if (document.getElementById('premiumEmballage').checked) premiumServicesList.push("Emballage renforcé");
+        let premiumTexte = premiumServicesList.length ? premiumServicesList.join(", ") : "Aucun";
+        
+        let promoCodeText = promoApplied ? "BIENVENUE5 (-5%)" : "Sans promo";
+        
+        // Construction du message WhatsApp complet
+        let message = `🛒 *NOUVELLE DEMANDE OlaBenin Bridge*%0A%0A` +
+            `👤 Nom: ${nom}%0A` +
+            `📧 Email: ${email}%0A` +
+            `📱 WhatsApp: ${whatsapp}%0A` +
+            `📦 Produit: ${produit}%0A` +
+            `🔢 Quantité: ${quantite}%0A` +
+            `⚖️ Poids: ${poids} kg%0A` +
+            `📏 Dimensions: ${dimensions}%0A` +
+            `✈️ Transport: ${transportTexte}%0A` +
+            `📍 Livraison Bénin: ${villeTexte}%0A` +
+            `✨ Services Premium: ${premiumTexte}%0A` +
+            `🏷️ Code promo: ${promoCodeText}%0A` +
+            `💰 Prix estimé final: ${prixAffiche}%0A%0A` +
+            `Merci de me contacter pour finaliser la commande et obtenir mon numéro de suivi.`;
+        
+        // Ouverture WhatsApp
+        window.open(`https://wa.me/2290157518294?text=${message}`, '_blank');
+        
+        // Préparation de l'email
+        const subject = `Demande de devis OlaBenin - ${produit}`;
+        const bodyMail = `Bonjour,\n\nJe souhaite obtenir un devis définitif pour mon import depuis la Chine.\n\n` +
+            `Nom: ${nom}\nEmail: ${email}\nWhatsApp: ${whatsapp}\nProduit: ${produit}\nQuantité: ${quantite}\nPoids: ${poids} kg\nDimensions: ${dimensions}\n` +
+            `Transport: ${transportTexte}\nLivraison: ${villeTexte}\nServices Premium: ${premiumTexte}\nCode promo: ${promoCodeText}\nPrix estimé: ${prixAffiche}\n\n` +
+            `Merci de me fournir les détails de paiement et le numéro de suivi. Cordialement.`;
+        
+        window.location.href = `mailto:serviceImport@proton.me,contactOlaBenin@protonmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyMail)}`;
+        
+        alert("✅ Demande envoyée avec succès ! Un agent OlaBenin vous recontactera sous 24h via WhatsApp avec votre numéro de suivi unique.");
+    });
+    
+    // Menu mobile
+    const menuIcon = document.getElementById('menuIcon');
+    const navLinks = document.getElementById('navLinks');
+    if (menuIcon) {
+        menuIcon.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+    }
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+        });
+    });
+</script>
+</body>
+</html>

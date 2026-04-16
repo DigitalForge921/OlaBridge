@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Notre histoire | OlaBenin Bridge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #fafcfd;
+            color: #1e2a3e;
+        }
+
+        /* Navigation identique à tes autres pages */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgba(15, 43, 54, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .logo h2 {
+            color: white;
+            font-size: 1.5rem;
+        }
+        .logo span {
+            color: #ffb347;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffb347;
+        }
+        .menu-icon {
+            display: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 800px) {
+            .nav-links {
+                position: fixed;
+                top: 65px;
+                left: -100%;
+                width: 70%;
+                height: calc(100vh - 65px);
+                background: #0f2b36;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 2rem;
+                transition: 0.3s;
+                gap: 2rem;
+            }
+            .nav-links.open {
+                left: 0;
+            }
+            .menu-icon {
+                display: block;
+            }
+        }
+
+        /* Hero section */
+        .hero-story {
+            background: linear-gradient(135deg, #0f2b36 0%, #1a4a5a 100%);
+            padding: 8rem 8% 4rem;
+            text-align: center;
+            color: white;
+            margin-top: 0;
+        }
+        .hero-story h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+        }
+        .hero-story p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Sections */
+        .section-page {
+            padding: 4rem 8%;
+        }
+        .section-page:nth-child(even) {
+            background: #f8fafc;
+        }
+        .container-text {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .section-title-page {
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            color: #0f2b36;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .section-subtitle {
+            text-align: center;
+            color: #ffb347;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+        .story-text {
+            font-size: clamp(1rem, 2vw, 1.1rem);
+            line-height: 1.8;
+            color: #2c3e4e;
+            margin-bottom: 1.5rem;
+        }
+        .highlight-box {
+            background: white;
+            border-left: 4px solid #ffb347;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .two-columns {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        .column {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        .column h3 {
+            color: #ffb347;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        .column ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .column li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.8rem;
+            position: relative;
+        }
+        .column li i {
+            position: absolute;
+            left: 0;
+            top: 0.2rem;
+            color: #ffb347;
+        }
+        .badge-do { color: #2e7d32; }
+        .badge-dont { color: #c62828; }
+        .quote {
+            background: #0f2b36;
+            color: white;
+            padding: 2rem;
+            border-radius: 24px;
+            text-align: center;
+            margin: 2rem 0;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+        .image-row {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+        .image-card {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+        .image-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .image-card p {
+            margin-top: 0.8rem;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background: #ffb347;
+            padding: 1rem 2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #1e2a3e;
+            font-weight: bold;
+            display: inline-block;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background: #ffa01e;
+            transform: scale(1.02);
+        }
+        footer {
+            background: #0a1c24;
+            color: #ccdde5;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        @media (max-width: 768px) {
+            .section-page {
+                padding: 3rem 5%;
+            }
+            .two-columns {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+        <h2>Ola<span>Benin</span></h2>
+    </div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="commande.html">Commander</a></li>
+        <li><a href="histoire.html" class="active">Notre histoire</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="menu-icon" id="menuIcon">
+        <i class="fas fa-bars"></i>
+    </div>
+</nav>
+
+<div class="hero-story">
+    <h1>Notre histoire</h1>
+    <p>Pourquoi OlaBenin Bridge est né et comment nous protégeons nos clients des arnaques</p>
+</div>
+
+<div class="section-page">
+    <div class="container-text">
+        <div class="section-subtitle">Notre mission</div>
+        <h2 class="section-title-page">Faciliter l'import Chine-Bénin sans stress</h2>
+        <p class="story-text">Nous savons à quel point il est difficile pour les commerçants et particuliers béninois de se procurer des produits en Chine. Entre les barrières de langue, les fournisseurs peu fiables, les frais cachés et les risques d'arnaque, le parcours est semé d'embûches. C’est exactement pour cela qu’OlaBenin Bridge a vu le jour.</p>
+        <p class="story-text">Notre fondateur, après avoir été victime d’une arnaque lors d’un premier achat en Chine, a décidé de créer une solution fiable. Aujourd’hui, nous sommes devenus le partenaire de confiance de nombreux importateurs béninois.</p>
+
+        <div class="image-row">
+            <div class="image-card"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="entrepôt"><p>Notre partenaire en Chine</p></div>
+            <div class="image-card"><img src="https://images.unsplash.com/photo-1565849904461-04a58ad377e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="équipe"><p>Notre équipe sur place</p></div>
+            <div class="image-card"><img src="https://images.unsplash.com/photo-1494415859740-21e878dd929d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80" alt="cargo"><p>Expédition sécurisée</p></div>
+        </div>
+
+        <div class="highlight-box">
+            <h3 style="color:#ffb347; margin-bottom:0.5rem;"><i class="fas fa-shield-alt"></i> Pourquoi nous avons créé cette plateforme</h3>
+            <p>Nous avons vécu les mêmes frustrations : paiement sans livraison, produits non conformes, frais qui explosent à l'arrivée. Nous avons donc décidé de bâtir un système transparent où chaque client sait exactement ce qu’il paie et reçoit ce qu’il a commandé. Aujourd'hui, notre transitaire en Chine contrôle chaque colis avant expédition, et nous assurons une livraison porte-à-porte au Bénin.</p>
+        </div>
+
+        <div class="section-subtitle">Nos engagements</div>
+        <div class="two-columns">
+            <div class="column">
+                <h3><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Ce que nous garantissons</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Pas de frais cachés, tout est clair dès le départ</li>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Suivi personnalisé de votre commande</li>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Livraison à domicile partout au Bénin</li>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Achat groupé = prix compétitifs</li>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Photos de votre produit avant expédition (option premium)</li>
+                </ul>
+            </div>
+            <div class="column">
+                <h3><i class="fas fa-exclamation-triangle" style="color:#c62828;"></i> Les arnaques que nous évitons</h3>
+                <ul>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> Paiement à des inconnus sans garantie</li>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> Fret qui double à l’arrivée</li>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> Produits contrefaits ou abîmés</li>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> Délais qui s’éternisent sans nouvelles</li>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> Intermédiaires fantômes</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-subtitle">Conseils pour bien commander</div>
+        <div class="two-columns">
+            <div class="column">
+                <h3><i class="fas fa-thumbs-up" style="color:#2e7d32;"></i> Les bonnes pratiques</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Donnez des détails précis : poids, dimensions, quantité</li>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Précisez votre ville pour le devis de livraison</li>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Utilisez le code promo BIENVENUE5 pour -5%</li>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Vérifiez votre WhatsApp pour le suivi</li>
+                    <li><i class="fas fa-check-circle" style="color:#2e7d32;"></i> Demandez les photos premium pour plus de sécurité</li>
+                </ul>
+            </div>
+            <div class="column">
+                <h3><i class="fas fa-ban" style="color:#c62828;"></i> Ce qu'il faut éviter</h3>
+                <ul>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> Ne faites pas confiance à des vendeurs sans avis</li>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> N’acceptez pas des prix trop bas sans contrôle</li>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> Ne payez jamais sans contrat ou facture</li>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> Évitez les intermédiaires multiples</li>
+                    <li><i class="fas fa-times-circle" style="color:#c62828;"></i> Ne négligez pas l’assurance pour les produits fragiles</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="quote">
+            <i class="fas fa-quote-left" style="font-size: 1.5rem; margin-right: 0.5rem; color:#ffb347;"></i>
+            "Importez l'esprit tranquille : nous avons déjà fait les erreurs pour vous."
+            <div style="margin-top: 1rem; font-weight: normal;">— L'équipe OlaBenin Bridge</div>
+        </div>
+
+        <div class="section-subtitle">Comment se déroule une commande chez nous</div>
+        <div class="two-columns">
+            <div class="column">
+                <h3><i class="fas fa-clipboard-list"></i> 1. Vous remplissez le formulaire</h3>
+                <p>Produit, poids, dimensions, ville de livraison. Nous recevons votre demande par WhatsApp et email.</p>
+            </div>
+            <div class="column">
+                <h3><i class="fas fa-store"></i> 2. Nous achetons en Chine</h3>
+                <p>Notre équipe commande auprès de fournisseurs vérifiés. Contrôle qualité possible.</p>
+            </div>
+            <div class="column">
+                <h3><i class="fas fa-ship"></i> 3. Expédition par notre transitaire</h3>
+                <p>Groupage de colis, fret maritime ou aérien. Vous avez un numéro de suivi.</p>
+            </div>
+            <div class="column">
+                <h3><i class="fas fa-truck"></i> 4. Livraison au Bénin</h3>
+                <p>Nous dédouanons et livrons à votre porte, partout dans le pays.</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 2rem 0;">
+            <a href="commande.html" class="btn-primary">👉 Commander maintenant en toute confiance</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>OlaBenin Bridge – Connecter vos achats en Chine à votre réussite au Bénin</p>
+    <p>© 2025 – Livraison partout au Bénin – Transparence et fiabilité</p>
+</footer>
+
+<script>
+    const menuIcon = document.getElementById('menuIcon');
+    const navLinks = document.getElementById('navLinks');
+    menuIcon.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+        });
+    });
+</script>
+</body>
+</html>

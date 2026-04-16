@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>OlaBenin Bridge | Import Chine → Bénin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #fafcfd;
+            color: #1e2a3e;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* LOADER */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0b2b3b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        .loader p {
+            color: white;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+        .loader.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 5%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+        nav.solid {
+            background: #0f2b36;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 0.8rem 5%;
+        }
+        .logo h2 {
+            color: white;
+            font-weight: 700;
+            font-size: clamp(1.2rem, 5vw, 1.7rem);
+        }
+        .logo span {
+            color: #ffb347;
+        }
+        .nav-links {
+            display: flex;
+            gap: clamp(1rem, 4vw, 2rem);
+            list-style: none;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+            font-size: clamp(0.85rem, 3vw, 1rem);
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #ffb347;
+        }
+        .menu-icon {
+            display: none;
+            font-size: 1.8rem;
+            color: white;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 75%;
+                max-width: 280px;
+                height: calc(100vh - 70px);
+                background: #0f2b36;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 2.5rem;
+                transition: 0.3s ease-in-out;
+                gap: 2rem;
+                border-radius: 0 20px 20px 0;
+                box-shadow: 5px 0 20px rgba(0,0,0,0.3);
+                z-index: 999;
+            }
+            .nav-links.open {
+                left: 0;
+            }
+            .menu-icon {
+                display: block;
+            }
+        }
+
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 90vh;
+            min-height: 550px;
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)), url('image1.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+        }
+        .hero-content {
+            max-width: 650px;
+            color: white;
+        }
+        .hero-content h1 {
+            font-size: clamp(1.8rem, 6vw, 3.2rem);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .hero-content p {
+            font-size: clamp(0.95rem, 4vw, 1.2rem);
+            margin-bottom: 1.8rem;
+        }
+        .btn-primary {
+            background: #ffb347;
+            border: none;
+            padding: 0.9rem 1.8rem;
+            font-weight: bold;
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
+            border-radius: 40px;
+            color: #1e2a3e;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .btn-primary:hover {
+            background: #ffa01e;
+            transform: scale(1.02);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #ffb347;
+            padding: 0.7rem 1.6rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            margin-left: 0.8rem;
+            transition: 0.2s;
+            display: inline-block;
+            font-size: clamp(0.85rem, 3.5vw, 1rem);
+        }
+        .btn-outline:hover {
+            background: #ffb347;
+            color: #1e2a3e;
+        }
+        @media (max-width: 550px) {
+            .hero-content .btn-outline {
+                margin-left: 0;
+                margin-top: 1rem;
+                display: inline-block;
+            }
+            .hero-content div {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+        }
+
+        /* SECTIONS GLOBAL */
+        .section {
+            padding: 4rem 5%;
+        }
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.6rem, 6vw, 2.3rem);
+            margin-bottom: 2.5rem;
+            color: #0f2b36;
+        }
+
+        /* CARDS GRID */
+        .cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            justify-content: center;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            flex: 1 1 240px;
+            max-width: 280px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid #eef2f5;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 35px rgba(0,0,0,0.1);
+        }
+        .card i {
+            font-size: 2.5rem;
+            color: #ffb347;
+            margin-bottom: 1rem;
+        }
+        .card img.bg-img-card {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 10px auto 0;
+            display: block;
+        }
+        .card h3 {
+            font-size: clamp(1.1rem, 4vw, 1.4rem);
+            margin-bottom: 0.5rem;
+        }
+        .card p {
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
+        }
+
+        /* PRESO FLEX */
+        .preso {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .preso-img {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .round-img {
+            width: clamp(90px, 15vw, 130px);
+            height: clamp(90px, 15vw, 130px);
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .preso-text {
+            flex: 1;
+            min-width: 240px;
+        }
+        .preso-text h2 {
+            font-size: clamp(1.4rem, 5vw, 2rem);
+            margin-bottom: 1rem;
+        }
+
+        /* STATS */
+        .stats {
+            background: #0f2b36;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            text-align: center;
+            padding: 3rem 5%;
+        }
+        .stat-item h3 {
+            font-size: clamp(1.8rem, 7vw, 2.5rem);
+            font-weight: 800;
+        }
+        .stat-item p {
+            font-size: clamp(0.85rem, 3vw, 1rem);
+        }
+
+        /* GALLERY */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.3rem;
+        }
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 20px;
+            height: 210px;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .gallery-item img:hover {
+            transform: scale(1.05);
+        }
+        @media (max-width: 550px) {
+            .gallery-item {
+                height: 180px;
+            }
+        }
+
+        /* FAQ */
+        .faq-item {
+            background: white;
+            margin-bottom: 1rem;
+            border-radius: 16px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        .faq-question {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            font-size: clamp(0.95rem, 4vw, 1.1rem);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.3s;
+            color: #4a627a;
+            font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+        }
+        .faq-item.active .faq-answer {
+            max-height: 250px;
+            padding-top: 1rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0a1c24;
+            color: #ccdde5;
+            padding: 2.5rem 5%;
+            text-align: center;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+        }
+
+        /* FIXED BUTTONS */
+        .chat-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffb347;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1100;
+            transition: 0.2s;
+        }
+        .chat-btn i {
+            font-size: 1.7rem;
+            color: #1e2a3e;
+        }
+        
+        .devis-express-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #0f2b36;
+            color: white;
+            padding: 0.7rem 1.3rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+            z-index: 1100;
+            font-weight: bold;
+            transition: 0.2s;
+            border: none;
+            font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+            white-space: nowrap;
+        }
+        .devis-express-btn i {
+            font-size: 1.2rem;
+            color: #ffb347;
+        }
+        .devis-express-btn:hover {
+            transform: scale(1.02);
+            background: #1e3a48;
+        }
+        @media (max-width: 480px) {
+            .devis-express-btn { padding: 0.5rem 1rem; bottom: 15px; left: 15px; white-space: nowrap; font-size: 0.7rem; }
+            .chat-btn { width: 48px; height: 48px; bottom: 15px; right: 15px; }
+            .chat-btn i { font-size: 1.5rem; }
+        }
+
+        /* POPUP */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(3px);
+        }
+        .popup-devis {
+            background: white;
+            max-width: 450px;
+            width: 90%;
+            border-radius: 32px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            animation: fadeInUp 0.3s ease;
+            margin: 1rem;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .popup-devis h3 {
+            color: #0f2b36;
+            margin-bottom: 0.5rem;
+            font-size: clamp(1.3rem, 5vw, 1.7rem);
+        }
+        .popup-devis input, .popup-devis select {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.7rem 0;
+            border: 1px solid #ddd;
+            border-radius: 40px;
+            font-size: 0.95rem;
+        }
+        .popup-devis button {
+            background: #ffb347;
+            border: none;
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        .close-popup {
+            background: #e0e7ed;
+            color: #1e2a3e;
+            margin-top: 0.7rem;
+        }
+
+        /* CHAT WINDOW */
+        .chat-window {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 300px;
+            max-width: calc(100vw - 40px);
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1100;
+        }
+        .chat-header {
+            background: #0f2b36;
+            padding: 0.9rem;
+            color: white;
+            font-weight: bold;
+        }
+        .chat-body {
+            padding: 0.8rem;
+            max-height: 280px;
+            overflow-y: auto;
+            background: #f9fafb;
+        }
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        .chat-input button {
+            background: #ffb347;
+            border: none;
+            padding: 0 1rem;
+            cursor: pointer;
+        }
+        @media (max-width: 550px) {
+            .chat-window {
+                width: 280px;
+                bottom: 80px;
+                right: 10px;
+            }
+        }
+
+        /* IMAGES RESPONSIVE */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .card .bg-img-card {
+            width: 60px;
+            height: 60px;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="loader" id="loader"><p>Chargement OlaBenin Bridge...</p></div>
+
+<nav id="navbar">
+    <div class="logo"><h2>OlaBenin<span>Bridge</span></h2></div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="commande.html">Commander</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="menu-icon" id="menuIcon"><i class="fas fa-bars"></i></div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Importez depuis la Chine jusqu'à votre domicile au Bénin</h1>
+        <p>Nous commandons pour vous, nous expédions, nous livrons partout au Bénin. Une seule interface, zéro souci.</p>
+        <div>
+            <a href="commande.html" class="btn-primary">Commander maintenant →</a>
+            <a href="suivi.html" class="btn-outline">Notre Histoire</a>
+        </div>
+    </div>
+</section>
+
+<div class="section">
+    <h2 class="section-title">Nos services</h2>
+    <div class="cards-grid">
+        <div class="card"><i class="fas fa-shopping-cart"></i><h3>Achat en Chine</h3><p>Nous commandons pour vous auprès de fournisseurs vérifiés.</p><img class="bg-img-card" src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="achat"></div>
+        <div class="card"><i class="fas fa-ship"></i><h3>Expédition groupée</h3><p>Notre transitaire en Chine expédie vos produits par bateau ou avion.</p><img class="bg-img-card" src="https://images.unsplash.com/photo-1565849904461-04a58ad377e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="expedition"></div>
+        <div class="card"><i class="fas fa-truck"></i><h3>Livraison porte-à-porte</h3><p>Nous livrons partout au Bénin : Cotonou, Parakou, Porto-Novo, Dassa, Abomey...</p><img class="bg-img-card" src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="livraison"></div>
+        <div class="card"><i class="fas fa-headset"></i><h3>Suivi personnalisé</h3><p>Un numéro de suivi unique pour chaque commande.</p><img class="bg-img-card" src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="suivi"></div>
+    </div>
+</div>
+
+<div class="section" style="background:#f2f6f9;">
+    <div class="preso">
+        <div class="preso-img">
+            <img class="round-img" src="https://images.unsplash.com/photo-1542296332-2e4473faf563?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="avion">
+            <img class="round-img" src="https://images.unsplash.com/photo-1494415859740-21e878dd929d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="bateau">
+            <img class="round-img" src="https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" alt="camion">
+        </div>
+        <div class="preso-text">
+            <h2>De la Chine à votre porte, on s'occupe de tout</h2>
+            <p>Vous choisissez le produit, nous gérons l'achat en Chine, l'expédition avec notre transitaire, et la livraison finale chez vous, où que vous soyez au Bénin.</p>
+            <p><strong>Livraison dans toutes les villes :</strong> Cotonou, Porto-Novo, Parakou, Dassa-Zoumé, Abomey, Bohicon, Lokossa, Natitingou, etc.</p>
+        </div>
+    </div>
+</div>
+
+<div class="stats">
+    <div class="stat-item"><i class="fas fa-ship fa-2x"></i><h3 id="stat1">0</h3><p>Expéditions réalisées</p></div>
+    <div class="stat-item"><i class="fas fa-boxes fa-2x"></i><h3 id="stat2">0</h3><p>Conteneurs traités</p></div>
+    <div class="stat-item"><i class="fas fa-user-check fa-2x"></i><h3 id="stat3">0</h3><p>Clients satisfaits</p></div>
+    <div class="stat-item"><i class="fas fa-map-marker-alt fa-2x"></i><h3 id="stat4">0</h3><p>Villes desservies</p></div>
+</div>
+
+<div class="section">
+    <h2 class="section-title">Pourquoi choisir OlaBenin Bridge ?</h2>
+    <div class="cards-grid">
+        <div class="card"><i class="fas fa-hand-holding-usd"></i><h3>Prix compétitifs</h3><p>Groupage d'achats = économies pour vous.</p></div>
+        <div class="card"><i class="fas fa-clock"></i><h3>Délais garantis</h3><p>Aérien 20-25j / Maritime 60-95j</p></div>
+        <div class="card"><i class="fas fa-truck-fast"></i><h3>Livraison partout</h3><p>Nous livrons dans tout le Bénin sans exception.</p></div>
+    </div>
+</div>
+
+<div class="section" style="background: #fafcfd;">
+    <h2 class="section-title">Comment ça marche ?</h2>
+    <div class="cards-grid">
+        <div class="card"><i class="fas fa-file-signature"></i><h3>1. Vous commandez</h3><p>Remplissez le formulaire avec le produit, le poids, etc.</p></div>
+        <div class="card"><i class="fas fa-store"></i><h3>2. Nous achetons</h3><p>Nous commandons le produit en Chine.</p></div>
+        <div class="card"><i class="fas fa-globe"></i><h3>3. Notre transitaire expédie</h3><p>Votre produit prend le bateau ou l'avion.</p></div>
+        <div class="card"><i class="fas fa-home"></i><h3>4. Nous livrons chez vous</h3><p>À Cotonou, Parakou, ou n'importe où au Bénin.</p></div>
+    </div>
+</div>
+
+<div class="section">
+    <h2 class="section-title">Nos opérations en images</h2>
+    <div class="gallery-grid">
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1529074963764-98f45c47344b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="cargoship"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="aircargo"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="truckdelivery"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="warehouse"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1494415859740-21e878dd929d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="worldmap"></div>
+        <div class="gallery-item"><img src="https://images.unsplash.com/photo-1581092335871-5c9b9fa2a4b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="workers"></div>
+    </div>
+</div>
+
+<div class="section" style="background: #f2f6f9;">
+    <h2 class="section-title">Foire aux questions</h2>
+    <div class="faq-container">
+        <div class="faq-item"><div class="faq-question">Quels sont les délais d'expédition ? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Transport maritime: 60-95 jours, aérien: 20-25 jours ouvrés après expédition.</div></div>
+        <div class="faq-item"><div class="faq-question">Livrez-vous dans tout le Bénin ? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Oui ! Nous livrons à Cotonou, Porto-Novo, Parakou, Dassa, Abomey, Bohicon, Lokossa, Natitingou, et toutes les autres villes.</div></div>
+        <div class="faq-item"><div class="faq-question">Comment suivre ma commande ? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Vous recevrez un numéro de suivi unique par WhatsApp et email. Rendez-vous sur notre page "Suivi" pour voir l'état de votre commande en temps réel.</div></div>
+        <div class="faq-item"><div class="faq-question">Puis-je importer des échantillons ? <i class="fas fa-chevron-down"></i></div><div class="faq-answer">Absolument, nous avons un service groupage économique pour petits colis.</div></div>
+    </div>
+</div>
+
+<footer>
+    <p>OlaBenin Bridge – Connecter vos achats en Chine à votre réussite au Bénin</p>
+    <p style="margin-top:1rem;">© 2025 – Livraison partout au Bénin</p>
+</footer>
+
+<div class="devis-express-btn" id="devisExpressBtn">
+    <i class="fas fa-bolt"></i> Devis gratuit en 5 min
+</div>
+
+<div class="popup-overlay" id="devisPopup">
+    <div class="popup-devis">
+        <i class="fas fa-ship" style="font-size: 2.5rem; color: #ffb347;"></i>
+        <h3>Devis express</h3>
+        <p>Répondez à 2 questions, recevez votre estimation</p>
+        <input type="text" id="popupProduit" placeholder="Nom du produit à importer" required>
+        <input type="number" id="popupPoids" placeholder="Poids approximatif (kg)" step="0.1" required>
+        <select id="popupTransport">
+            <option value="maritime">Transport maritime (60-95j)</option>
+            <option value="aerien">Transport aérien (20-25j)</option>
+        </select>
+        <button id="submitDevisExpress"><i class="fab fa-whatsapp"></i> Recevoir devis sur WhatsApp</button>
+        <button class="close-popup" id="closePopup">Fermer</button>
+    </div>
+</div>
+
+<div class="chat-btn" id="chatBtn"><i class="fas fa-comment-dots"></i></div>
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">Assistant OlaBenin <i class="fas fa-robot"></i></div>
+    <div class="chat-body" id="chatBody"><p>Bonjour ! Comment puis-je vous aider ? (Import, devis, suivi)</p></div>
+    <div class="chat-input"><input type="text" id="chatInput" placeholder="Votre message..."><button id="sendChat"><i class="fas fa-paper-plane"></i></button></div>
+</div>
+
+<script>
+    window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hide'); }, 500); });
+    window.addEventListener('scroll', () => { const nav = document.getElementById('navbar'); if(window.scrollY > 50) nav.classList.add('solid'); else nav.classList.remove('solid'); });
+    const menuIcon = document.getElementById('menuIcon'); const navLinks = document.getElementById('navLinks');
+    menuIcon.addEventListener('click', () => { navLinks.classList.toggle('open'); });
+    document.querySelectorAll('.nav-links a').forEach(link => { link.addEventListener('click', () => navLinks.classList.remove('open')); });
+    
+    function animateNumber(elementId, start, end, duration) { let startTime = null; const elem = document.getElementById(elementId); const step = (timestamp) => { if (!startTime) startTime = timestamp; const progress = Math.min((timestamp - startTime) / duration, 1); elem.innerText = Math.floor(progress * (end - start) + start); if (progress < 1) requestAnimationFrame(step); else elem.innerText = end; }; requestAnimationFrame(step); }
+    const observerStats = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting){ animateNumber('stat1', 0, 328, 1500); animateNumber('stat2', 0, 1240, 1500); animateNumber('stat3', 0, 890, 1500); animateNumber('stat4', 0, 15, 1500); observerStats.disconnect(); } }); }, {threshold:0.5});
+    const statsSection = document.querySelector('.stats'); if(statsSection) observerStats.observe(statsSection);
+    
+    document.querySelectorAll('.faq-item').forEach(item => { item.addEventListener('click', () => { item.classList.toggle('active'); }); });
+    
+    const chatBtn = document.getElementById('chatBtn'); const chatWindow = document.getElementById('chatWindow'); const chatBody = document.getElementById('chatBody'); const chatInput = document.getElementById('chatInput'); const sendBtn = document.getElementById('sendChat');
+    let chatOpen = false; chatBtn.addEventListener('click', () => { chatOpen = !chatOpen; chatWindow.style.display = chatOpen ? 'flex' : 'none'; });
+    function addMessage(msg, isUser = false) { const div = document.createElement('div'); div.style.margin = '6px 0'; div.style.padding = '6px 12px'; div.style.borderRadius = '18px'; div.style.maxWidth = '90%'; div.style.wordBreak = 'break-word'; div.style.fontSize = '0.85rem'; if(isUser){ div.style.background = '#ffb347'; div.style.color = '#1e2a3e'; div.style.alignSelf = 'flex-end'; div.style.marginLeft = 'auto'; } else { div.style.background = '#eef2f5'; } div.innerText = msg; chatBody.appendChild(div); chatBody.scrollTop = chatBody.scrollHeight; }
+    function botReply(message) { let reply = "Merci de nous contacter sur WhatsApp au +229 0157518294 pour un devis détaillé."; const lowerMsg = message.toLowerCase(); if(lowerMsg.includes('devis') || lowerMsg.includes('prix')) reply = "Pour un devis, remplissez le formulaire sur la page Commander ou cliquez sur Devis gratuit à gauche."; else if(lowerMsg.includes('delai') || lowerMsg.includes('délai')) reply = "Délai maritime 60-95 jours, aérien 20-25 jours."; else if(lowerMsg.includes('suivi')) reply = "Rendez-vous sur notre page Suivi et entrez votre numéro de commande."; else if(lowerMsg.includes('livraison')) reply = "Nous livrons dans tout le Bénin ! Cotonou, Parakou, Porto-Novo, Dassa, Abomey, etc."; else if(lowerMsg.includes('bonjour')) reply = "Bonjour ! Comment pouvons-nous faciliter votre import depuis la Chine ?"; setTimeout(() => addMessage(reply), 300); }
+    sendBtn.addEventListener('click', () => { const msg = chatInput.value.trim(); if(msg === "") return; addMessage(msg, true); chatInput.value = ""; botReply(msg); });
+    chatInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendBtn.click(); });
+    
+    const devisBtn = document.getElementById('devisExpressBtn');
+    const devisPopup = document.getElementById('devisPopup');
+    const closePopup = document.getElementById('closePopup');
+    const submitDevis = document.getElementById('submitDevisExpress');
+    
+    devisBtn.addEventListener('click', () => { devisPopup.style.display = 'flex'; });
+    closePopup.addEventListener('click', () => { devisPopup.style.display = 'none'; });
+    devisPopup.addEventListener('click', (e) => { if(e.target === devisPopup) devisPopup.style.display = 'none'; });
+    
+    submitDevis.addEventListener('click', () => {
+        const produit = document.getElementById('popupProduit').value;
+        const poids = document.getElementById('popupPoids').value;
+        const transport = document.getElementById('popupTransport').options[document.getElementById('popupTransport').selectedIndex].text;
+        if(!produit || !poids) { alert("Veuillez remplir le produit et le poids"); return; }
+        let prixEstime = 0;
+        if(transport.includes('maritime')) prixEstime = (poids * 1500 + 25000) * 1.15;
+        else prixEstime = (poids * 6500 + 15000) * 1.15;
+        const message = `Devis Express OlaBenin Bridge - Produit: ${produit} - Poids: ${poids} kg - Transport: ${transport} - Prix estimé: ${Math.round(prixEstime).toLocaleString()} FCFA - Merci de me contacter pour finaliser.`;
+        window.open(`https://wa.me/2290157518294?text=${encodeURIComponent(message)}`, '_blank');
+        devisPopup.style.display = 'none';
+        alert("Demande envoyée ! Notre équipe vous répond sous 30min sur WhatsApp.");
+    });
+</script>
+</body>
+</html>
